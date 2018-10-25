@@ -9,6 +9,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import protocol.code.PacketCodec;
+import protocol.code.PacketDecoder;
+import protocol.code.PacketEncoder;
 import protocol.packet.MessageRequestPacket;
 import server.ServerHandler;
 import utils.LoginUtil;
@@ -43,7 +45,10 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) {
+                        ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new ClientLoginHandler());
+                        ch.pipeline().addLast(new ClientMessageHandler());
+                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
         // 4.建立连接
@@ -101,8 +106,7 @@ public class NettyClient {
                     MessageRequestPacket packet = new MessageRequestPacket();
                     packet.setMessage(line);
                     //发送
-                    ByteBuf byteBuf = PacketCodec.INSTANCE.encode(channel.alloc(),packet);
-                    channel.writeAndFlush(byteBuf);
+                    channel.writeAndFlush(packet);
                 }
             }
         }).start();

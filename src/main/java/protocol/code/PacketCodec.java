@@ -13,13 +13,12 @@ import utils.Serializer;
  * Time: 2018/10/24
  **/
 public class PacketCodec {
+    //这是一个协议标识
     private static final int MAGIC_NUMBER = 0x12345678;
     //实现单例调用
     public static final PacketCodec INSTANCE = new PacketCodec();
 
-    public ByteBuf encode(ByteBufAllocator byteBufAllocator, Packet packet) {
-        // 1. 创建 ByteBuf 对象
-        ByteBuf byteBuf = byteBufAllocator.ioBuffer();
+    public void encode(ByteBuf byteBuf, Packet packet) {
         // 2. 序列化 Java 对象
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
 
@@ -31,7 +30,6 @@ public class PacketCodec {
         byteBuf.writeInt(bytes.length);
         byteBuf.writeBytes(bytes);
 
-        return byteBuf;
     }
 
     public Packet decode(ByteBuf byteBuf) {
