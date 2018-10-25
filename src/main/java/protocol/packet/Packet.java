@@ -1,5 +1,6 @@
-package protocol;
+package protocol.packet;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 /**
@@ -17,6 +18,7 @@ public abstract class Packet {
     /**
      * 指令
      */
+    @JsonIgnore
     public abstract Byte getCommand();
 
 }

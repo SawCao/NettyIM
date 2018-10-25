@@ -3,8 +3,7 @@ package protocol.code;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import protocol.Command;
-import protocol.LoginRequestPacket;
-import protocol.Packet;
+import protocol.packet.*;
 import utils.JSONSerializer;
 import utils.Serializer;
 
@@ -67,6 +66,12 @@ public class PacketCodec {
     private Class<? extends Packet> getRequestType(byte command){
         if(command == Command.LOGIN_REQUEST)
             return LoginRequestPacket.class;
+        if(command == Command.LOGIN_RESPONSE)
+            return LoginResponsePacket.class;
+        if(command == Command.MESSAGE_REQUEST)
+            return MessageRequestPacket.class;
+        if(command == Command.MESSAGE_RESPONSE)
+        return MessageResponsePacket.class;
         return null;
     }
 

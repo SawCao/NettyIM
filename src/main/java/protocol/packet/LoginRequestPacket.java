@@ -1,6 +1,7 @@
-package protocol;
+package protocol.packet;
 
 import lombok.Data;
+import protocol.Command;
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,14 +9,14 @@ import lombok.Data;
  * Time: 2018/10/24
  **/
 @Data
-public class LoginRequestPacket extends Packet implements Command{
+public class LoginRequestPacket extends Packet {
     private String userId;
     private String userName;
     private String password;
 
     @Override
     public Byte getCommand(){
-        return LOGIN_REQUEST;
+        return Command.LOGIN_REQUEST;
     }
 }
 

@@ -2,10 +2,13 @@ package client;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import protocol.LoginRequestPacket;
-import protocol.LoginResponsePacket;
-import protocol.Packet;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import protocol.packet.LoginRequestPacket;
+import protocol.packet.LoginResponsePacket;
+import protocol.packet.MessageResponsePacket;
+import protocol.packet.Packet;
 import protocol.code.PacketCodec;
+import utils.LoginUtil;
 
 import java.util.Date;
 import java.util.UUID;
@@ -17,10 +20,10 @@ import java.util.UUID;
  * @author caorui1
  * @create 2018-10-24 16:28
  */
-public class ClientLoginHandler {
+public class ClientLoginHandler  extends ChannelInboundHandlerAdapter {
 
     public void channelActive(ChannelHandlerContext channelHandlerContext) {
-        System.out.print(new Date() + "客户端开始登录");
+        System.out.print("\n" + new Date() + "客户端开始登录");
 
         //创建登录对象
         LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
@@ -45,10 +48,14 @@ public class ClientLoginHandler {
             LoginResponsePacket loginResponsePacket = (LoginResponsePacket) packet;
 
             if (loginResponsePacket.isSuccess()) {
-                System.out.println(new Date() + ": 客户端登录成功");
+                LoginUtil.markAsLogin(ctx.channel());
+                System.out.println("\n" + new Date() + ": 客户端登录成功");
             } else {
-                System.out.println(new Date() + ": 客户端登录失败，原因：" + loginResponsePacket.getReason());
+                System.out.println("\n" + new Date() + ": 客户端登录失败，原因：" + loginResponsePacket.getReason());
             }
+        }else if (packet instanceof MessageResponsePacket) {
+            MessageResponsePacket messageResponsePacket = (MessageResponsePacket) packet;
+            System.out.println(new Date() + ": 收到服务端的消息: " + messageResponsePacket.getMessage());
         }
     }
 
