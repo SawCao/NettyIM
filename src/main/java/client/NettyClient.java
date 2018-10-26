@@ -8,6 +8,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import protocol.code.PacketCodec;
 import protocol.code.PacketDecoder;
 import protocol.code.PacketEncoder;
@@ -45,6 +46,7 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) {
+                        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 7, 4));
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new ClientLoginHandler());
                         ch.pipeline().addLast(new ClientMessageHandler());
