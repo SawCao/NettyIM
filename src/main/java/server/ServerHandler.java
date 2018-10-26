@@ -29,6 +29,9 @@ public class ServerHandler  extends SimpleChannelInboundHandler<LoginRequestPack
             loginResponsePacket.setSuccess(false);
             System.out.println(new Date() + ": 登录失败!");
         }
+
+        // 登录响应
+        ctx.channel().writeAndFlush(loginResponsePacket);
     }
 
     private boolean valid(LoginRequestPacket loginRequestPacket) {
