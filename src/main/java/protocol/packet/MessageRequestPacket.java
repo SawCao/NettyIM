@@ -13,6 +13,7 @@ import protocol.Command;
 @Data
 public class MessageRequestPacket extends Packet {
 
+    private String toId;
     private String message;
 
     @Override

@@ -15,6 +15,12 @@ public class MessageResponsePacket extends Packet {
 
     private String message;
 
+    //消息发送方的id
+    private String fromId;
+
+    //消息发送方的name
+    private String fromName;
+
     @Override
     public Byte getCommand() {
         return Command.MESSAGE_RESPONSE;

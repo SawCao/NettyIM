@@ -14,7 +14,7 @@ import utils.Serializer;
  **/
 public class PacketCodec {
     //这是一个协议标识
-    private static final int MAGIC_NUMBER = 0x12345678;
+    public static final int MAGIC_NUMBER = 0x12345678;
     //实现单例调用
     public static final PacketCodec INSTANCE = new PacketCodec();
 

@@ -8,10 +8,10 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.util.AttributeKey;
 import protocol.code.PacketDecoder;
 import protocol.code.PacketEncoder;
+import utils.Spliter;
 
 /**
  * 描述:
@@ -45,9 +45,10 @@ public class NettyServer {
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     protected void initChannel(NioSocketChannel ch) {
-                        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 7, 4));
+                        ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
-                        ch.pipeline().addLast(new ServerHandler());
+                        ch.pipeline().addLast(new ServerLoginHandler());
+                        ch.pipeline().addLast(new AuthHandler());
                         ch.pipeline().addLast(new MessageHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }

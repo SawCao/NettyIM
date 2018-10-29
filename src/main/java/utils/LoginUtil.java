@@ -17,6 +17,7 @@ public class LoginUtil {
 
     public static void markAsLogin(Channel channel) {
         channel.attr(Attributes.LOGIN).set(true);
+        Attribute<Boolean> loginAttr = channel.attr(Attributes.LOGIN);
     }
 
     public static boolean hasLogin(Channel channel) {

@@ -1,11 +1,14 @@
 package server;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import protocol.Seesion.Session;
 import protocol.code.PacketCodec;
 import protocol.packet.MessageRequestPacket;
 import protocol.packet.MessageResponsePacket;
+import utils.SessionUtil;
 
 import java.util.Date;
 
@@ -20,10 +23,24 @@ public class MessageHandler extends SimpleChannelInboundHandler<MessageRequestPa
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequestPacket msg) throws Exception {
-        // 处理消息
-        System.out.println(new Date() + ": 收到客户端消息: " + msg.getMessage());
+        //拿到消息发送方的session
+        Session session = SessionUtil.getSession(ctx.channel());
+
+        //构造会话信息
         MessageResponsePacket messageResponsePacket = new MessageResponsePacket();
-        messageResponsePacket.setMessage("服务端回复【" + msg.getMessage() + "】");
-        ctx.channel().writeAndFlush(messageResponsePacket);
+        messageResponsePacket.setFromId(session.getId());
+        messageResponsePacket.setFromName(session.getName());
+        messageResponsePacket.setMessage(messageResponsePacket.getMessage());
+
+        //获取消息接收方的channel
+        Channel toChannel = SessionUtil.getChannel(msg.getToId());
+
+        //将消息发送给接收方
+        if (toChannel != null && SessionUtil.hasLogin(toChannel)) {
+            toChannel.writeAndFlush(messageResponsePacket);
+            System.out.print("向客户端：" + msg.getToId() + "发送了消息");
+        } else {
+            System.err.println("[" + msg.getToId() + "] 不在线，发送失败!");
+        }
     }
 }

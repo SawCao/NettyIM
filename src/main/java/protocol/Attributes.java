@@ -1,6 +1,7 @@
 package protocol;
 
 import io.netty.util.AttributeKey;
+import protocol.Seesion.Session;
 
 /**
  * 描述:
@@ -14,4 +15,5 @@ public interface Attributes {
      * AttributeKey是netty自带类
      */
     AttributeKey<Boolean> LOGIN = AttributeKey.newInstance("login");
+    AttributeKey<Session> SESSION = AttributeKey.newInstance("session");
 }
