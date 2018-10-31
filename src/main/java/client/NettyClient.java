@@ -9,8 +9,10 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import protocol.code.PacketDecoder;
 import protocol.code.PacketEncoder;
+import protocol.packet.LoginRequestPacket;
 import protocol.packet.MessageRequestPacket;
 import utils.LoginUtil;
+import utils.SessionUtil;
 import utils.Spliter;
 
 import java.util.Date;
@@ -94,19 +96,34 @@ public class NettyClient {
     }
 
     private static void startConsoleThread(Channel channel) {
+        Scanner sc = new Scanner(System.in);
         new Thread(() -> {
             while (!Thread.interrupted()){
-                if(LoginUtil.hasLogin(channel)){
-                    System.out.print("输入消息发送至服务端：");
+                if(!SessionUtil.hasLogin(channel)){
+                    System.out.print("请输入用户名：");
                     //读取控制台输入
-                    Scanner sc = new Scanner(System.in);
                     String line = sc.nextLine();
                     //打包
-                    MessageRequestPacket packet = new MessageRequestPacket();
-                    packet.setMessage(line);
+                    LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+                    loginRequestPacket.setUserName(line);
+                    //设置默认密码
+                    loginRequestPacket.setPassword("pwd");
                     //发送
-                    channel.writeAndFlush(packet);
+                    channel.writeAndFlush(loginRequestPacket);
+                    //线程暂停一秒，等待接收登录消息
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    System.out.print("输入你想要发送对象的名字：");
+                    String toId = sc.next();
+                    System.out.print("输入你想要发送的消息：");
+                    String msg = sc.next();
+                    channel.writeAndFlush(new MessageRequestPacket(toId,msg));
                 }
+
             }
         }).start();
     }

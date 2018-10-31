@@ -19,15 +19,18 @@ import java.util.concurrent.ConcurrentHashMap;
 @Data
 public class SessionUtil {
     private static final Map<String,Channel> icMap = new ConcurrentHashMap<>();
+    private static final Map<String,Session> name2sessionMap = new ConcurrentHashMap<>();
 
     public static void bindSession(Session session,Channel channel){
         icMap.put(session.getId(),channel);
-        channel.attr(Attributes.SESSION).set(null);
+        name2sessionMap.put(session.getName(),session);
+        channel.attr(Attributes.SESSION).set(session);
     }
 
     public static void unBindSession(Channel channel) {
         if (hasLogin(channel)) {
             icMap.remove(getSession(channel).getId());
+            name2sessionMap.remove(getSession(channel).getName());
             channel.attr(Attributes.SESSION).set(null);
         }
     }
@@ -43,7 +46,7 @@ public class SessionUtil {
     }
 
     public static Channel getChannel(String userId) {
-        return icMap.get(userId);
+        return icMap.get(name2sessionMap.get(userId).getId());
     }
 
 }

@@ -18,4 +18,9 @@ public class Session {
     public String toString() {
         return id + ":" + name;
     }
+
+    public Session(String id,String name){
+        this.id = id;
+        this.name = name;
+    }
 }

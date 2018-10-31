@@ -16,6 +16,14 @@ public class MessageRequestPacket extends Packet {
     private String toId;
     private String message;
 
+    public MessageRequestPacket(){
+
+    }
+    public MessageRequestPacket(String toId, String msg) {
+        this.toId = toId;
+        this.message = msg;
+    }
+
     @Override
     public Byte getCommand() {
         return Command.MESSAGE_REQUEST;

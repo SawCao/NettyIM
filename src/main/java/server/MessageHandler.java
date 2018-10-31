@@ -30,7 +30,7 @@ public class MessageHandler extends SimpleChannelInboundHandler<MessageRequestPa
         MessageResponsePacket messageResponsePacket = new MessageResponsePacket();
         messageResponsePacket.setFromId(session.getId());
         messageResponsePacket.setFromName(session.getName());
-        messageResponsePacket.setMessage(messageResponsePacket.getMessage());
+        messageResponsePacket.setMessage(msg.getMessage());
 
         //获取消息接收方的channel
         Channel toChannel = SessionUtil.getChannel(msg.getToId());

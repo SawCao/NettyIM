@@ -22,7 +22,8 @@ public class ClientMessageHandler extends SimpleChannelInboundHandler<MessageRes
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageResponsePacket msg) throws Exception {
-        System.out.println(new Date() + ": 收到服务端的消息: " + msg.getMessage());
+        //获取来自别的客户端的消息
+        System.out.println(new Date() + ": 收到来自："+ msg.getFromName() +"的消息: " + msg.getMessage());
     }
 
 }
