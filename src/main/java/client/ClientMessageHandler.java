@@ -1,6 +1,7 @@
 package client;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -18,7 +19,9 @@ import java.util.Date;
  * @author caorui1
  * @create 2018-10-25 17:16
  */
+@ChannelHandler.Sharable
 public class ClientMessageHandler extends SimpleChannelInboundHandler<MessageResponsePacket> {
+    public static final ClientMessageHandler INSTANCE = new ClientMessageHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageResponsePacket msg) throws Exception {

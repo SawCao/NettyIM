@@ -47,8 +47,8 @@ public class NettyClient {
                     public void initChannel(SocketChannel ch) {
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
-                        ch.pipeline().addLast(new ClientLoginHandler());
-                        ch.pipeline().addLast(new ClientMessageHandler());
+                        ch.pipeline().addLast(ClientLoginHandler.INSTANCE);
+                        ch.pipeline().addLast(ClientMessageHandler.INSTANCE);
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });

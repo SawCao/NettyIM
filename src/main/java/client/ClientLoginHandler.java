@@ -1,6 +1,7 @@
 package client;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -23,7 +24,10 @@ import java.util.UUID;
  * @author caorui1
  * @create 2018-10-24 16:28
  */
+@ChannelHandler.Sharable
 public class ClientLoginHandler  extends SimpleChannelInboundHandler<LoginResponsePacket> {
+
+    public static final ClientLoginHandler INSTANCE = new ClientLoginHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginResponsePacket loginResponsePacket) {
