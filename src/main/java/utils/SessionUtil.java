@@ -1,6 +1,7 @@
 package utils;
 
 import io.netty.channel.Channel;
+import io.netty.channel.group.ChannelGroup;
 import lombok.Data;
 import protocol.Attributes;
 import protocol.Seesion.Session;
@@ -20,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SessionUtil {
     private static final Map<String,Channel> icMap = new ConcurrentHashMap<>();
     private static final Map<String,Session> name2sessionMap = new ConcurrentHashMap<>();
+    private static final Map<String, ChannelGroup> groupIdChannelGroupMap = new ConcurrentHashMap<>();
 
     public static void bindSession(Session session,Channel channel){
         icMap.put(session.getId(),channel);
@@ -49,4 +51,10 @@ public class SessionUtil {
         return icMap.get(name2sessionMap.get(userId).getId());
     }
 
+    public static void bindChannelGroup(String groupId, ChannelGroup channelGroup) {
+        groupIdChannelGroupMap.put(groupId, channelGroup);
+    }
+    public static ChannelGroup getChannelGroup(String groupId) {
+        return groupIdChannelGroupMap.get(groupId);
+    }
 }

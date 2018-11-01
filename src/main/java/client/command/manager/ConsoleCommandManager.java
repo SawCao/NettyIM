@@ -1,5 +1,6 @@
-package client.command;
+package client.command.manager;
 
+import client.command.*;
 import io.netty.channel.Channel;
 import utils.ConsoleCommand;
 
@@ -22,6 +23,9 @@ public class ConsoleCommandManager implements ConsoleCommand {
         consoleCommandMap.put("sendToUser", new SendToUserConsoleCommand());
         consoleCommandMap.put("logout", new LogoutConsoleCommand());
         consoleCommandMap.put("createGroup", new CreateGroupConsoleCommand());
+        consoleCommandMap.put("joinGroup", new JoinGroupConsoleCommand());
+        consoleCommandMap.put("quitGroup", new QuitGroupConsoleCommand());
+        consoleCommandMap.put("lgm", new ListGroupMembersConsoleCommand());
     }
 
     @Override

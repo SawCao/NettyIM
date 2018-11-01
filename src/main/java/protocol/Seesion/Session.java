@@ -19,6 +19,10 @@ public class Session {
         return id + ":" + name;
     }
 
+    public Session(){
+
+    }
+
     public Session(String id,String name){
         this.id = id;
         this.name = name;

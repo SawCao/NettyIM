@@ -57,7 +57,6 @@ public class PacketCodec {
         if (requestType != null && serializer != null) {
             return serializer.deserialize(requestType, bytes);
         }
-
         return null;
     }
 
@@ -69,7 +68,23 @@ public class PacketCodec {
         if(command == Command.MESSAGE_REQUEST)
             return MessageRequestPacket.class;
         if(command == Command.MESSAGE_RESPONSE)
-        return MessageResponsePacket.class;
+            return MessageResponsePacket.class;
+        if(command == Command.CREATE_GROUP_REQUEST)
+            return CreateGroupRequestPacket.class;
+        if(command == Command.CREATE_GROUP_RESPONSE)
+            return CreateGroupResponsePacket.class;
+        if(command == Command.LIST_GROUP_MEMBERS_REQUEST)
+            return ListGroupMembersRequestPacket.class;
+        if(command == Command.LIST_GROUP_MEMBERS_RESPONSE)
+            return ListGroupMembersResponsePacket.class;
+        if (command == Command.JOIN_GROUP_REQUEST)
+            return JoinGroupRequestPacket.class;
+        if (command == Command.JOIN_GROUP_RESPONSE)
+            return JoinGroupResponsePacket.class;
+        if (command == Command.QUIT_GROUP_REQUEST)
+            return QuitGroupRequestPacket.class;
+        if (command == Command.QUIT_GROUP_RESPONSE)
+            return QuitGroupResponsePacket.class;
         return null;
     }
 

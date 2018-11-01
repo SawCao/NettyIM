@@ -1,5 +1,7 @@
 package client;
 
+import client.command.LoginConsoleCommand;
+import client.command.manager.ConsoleCommandManager;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -11,6 +13,8 @@ import protocol.code.PacketDecoder;
 import protocol.code.PacketEncoder;
 import protocol.packet.LoginRequestPacket;
 import protocol.packet.MessageRequestPacket;
+import server.CreateGroupRequestHandler;
+import utils.ConsoleCommand;
 import utils.LoginUtil;
 import utils.SessionUtil;
 import utils.Spliter;
@@ -48,6 +52,13 @@ public class NettyClient {
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new ClientLoginHandler());
+                        ch.pipeline().addLast(new CreateGroupResponseHandler());
+                        // 加群响应处理器
+                        ch.pipeline().addLast(new JoinGroupResponseHandler());
+                        // 退群响应处理器
+                        ch.pipeline().addLast(new QuitGroupResponseHandler());
+                        // 获取群成员响应处理器
+                        ch.pipeline().addLast(new ListGroupMembersResponseHandler());
                         ch.pipeline().addLast(new ClientMessageHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
@@ -80,7 +91,7 @@ public class NettyClient {
     private static void failedCountConnect(Bootstrap bootstrap, String host, int port, int retry) {
         bootstrap.connect(host, port).addListener(future -> {
             if (future.isSuccess()) {
-                System.out.print("连接成功！");
+                System.out.print("连接成功！启动控制台进程！———————");
                 Channel channel = ((ChannelFuture)future).channel();
                 startConsoleThread(channel);
             } else if (retry == 0) {
@@ -96,32 +107,17 @@ public class NettyClient {
     }
 
     private static void startConsoleThread(Channel channel) {
-        Scanner sc = new Scanner(System.in);
+        ConsoleCommandManager consoleCommandManager = new ConsoleCommandManager();
+        LoginConsoleCommand loginConsoleCommand = new LoginConsoleCommand();
+        Scanner scanner = new Scanner(System.in);
+
         new Thread(() -> {
             while (!Thread.interrupted()){
                 if(!SessionUtil.hasLogin(channel)){
-                    System.out.print("请输入用户名：");
-                    //读取控制台输入
-                    String line = sc.nextLine();
-                    //打包
-                    LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
-                    loginRequestPacket.setUserName(line);
-                    //设置默认密码
-                    loginRequestPacket.setPassword("pwd");
-                    //发送
-                    channel.writeAndFlush(loginRequestPacket);
-                    //线程暂停一秒，等待接收登录消息
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    System.out.print("输入你想要发送对象的名字：");
-                    String toId = sc.next();
-                    System.out.print("输入你想要发送的消息：");
-                    String msg = sc.next();
-                    channel.writeAndFlush(new MessageRequestPacket(toId,msg));
+                    loginConsoleCommand.exec(scanner,channel);
+
+                }else{
+                    consoleCommandManager.exec(scanner,channel);
                 }
 
             }

@@ -1,6 +1,7 @@
 package client.command;
 
 import io.netty.channel.Channel;
+import protocol.packet.CreateGroupRequestPacket;
 import utils.ConsoleCommand;
 
 import java.util.Arrays;
