@@ -20,4 +20,7 @@ public interface Command{
     Byte LIST_GROUP_MEMBERS_REQUEST = 10;
     Byte JOIN_GROUP_RESPONSE = 11;
     Byte JOIN_GROUP_REQUEST = 12;
+    Byte GROUP_MESSAGE_REQUEST = 13;
+    Byte GROUP_MESSAGE_RESPONSE = 14;
+
 }

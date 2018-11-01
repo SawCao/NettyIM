@@ -1,9 +1,11 @@
 package protocol.code;
 
+import client.GroupMessageResponseHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import protocol.Command;
 import protocol.packet.*;
+import server.GroupMessageRequestHandler;
 import utils.JSONSerializer;
 import utils.Serializer;
 
@@ -85,6 +87,10 @@ public class PacketCodec {
             return QuitGroupRequestPacket.class;
         if (command == Command.QUIT_GROUP_RESPONSE)
             return QuitGroupResponsePacket.class;
+        if (command == Command.GROUP_MESSAGE_REQUEST)
+            return GroupMessageRequestPacket.class;
+        if (command == Command.GROUP_MESSAGE_RESPONSE)
+            return GroupMessageResponsePacket.class;
         return null;
     }
 
