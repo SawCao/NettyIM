@@ -4,6 +4,8 @@ import io.netty.channel.Channel;
 import protocol.packet.MessageRequestPacket;
 import utils.ConsoleCommand;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**

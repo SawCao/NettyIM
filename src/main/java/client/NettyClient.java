@@ -14,6 +14,7 @@ import protocol.code.PacketEncoder;
 import protocol.packet.LoginRequestPacket;
 import protocol.packet.MessageRequestPacket;
 import server.CreateGroupRequestHandler;
+import server.IMIdleStateHandler;
 import utils.ConsoleCommand;
 import utils.LoginUtil;
 import utils.SessionUtil;
@@ -49,6 +50,8 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) {
+                        // 空闲检测
+                        ch.pipeline().addLast(new IMIdleStateHandler());
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new ClientLoginHandler());
@@ -62,6 +65,8 @@ public class NettyClient {
                         ch.pipeline().addLast(GroupMessageResponseHandler.INSTANCE);
                         ch.pipeline().addLast(new ClientMessageHandler());
                         ch.pipeline().addLast(new PacketEncoder());
+                        // 心跳定时器
+                        ch.pipeline().addLast(new HeartBeatTimerHandler());
                     }
                 });
         // 4.建立连接

@@ -91,6 +91,10 @@ public class PacketCodec {
             return GroupMessageRequestPacket.class;
         if (command == Command.GROUP_MESSAGE_RESPONSE)
             return GroupMessageResponsePacket.class;
+        if(command == Command.HEARTBEAT_REQUEST)
+            return HeartBeatRequestPacket.class;
+        if(command == Command.HEARTBEAT_RESPONSE)
+            return HeartBeatResponsePacket.class;
         return null;
     }
 
