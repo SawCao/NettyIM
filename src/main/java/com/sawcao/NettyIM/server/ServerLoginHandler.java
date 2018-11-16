@@ -1,19 +1,12 @@
-package server;
+package com.sawcao.NettyIM.server;
 
 import com.sawcao.NettyIM.util.RedisUtil;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.index.PathBasedRedisIndexDefinition;
-import org.springframework.util.Assert;
 import protocol.Seesion.Session;
 import protocol.packet.*;
-import protocol.code.PacketCodec;
-import utils.LoginUtil;
 import utils.SessionUtil;
 
 import java.io.Serializable;

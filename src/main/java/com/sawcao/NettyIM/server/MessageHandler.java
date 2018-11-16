@@ -1,7 +1,6 @@
-package server;
+package com.sawcao.NettyIM.server;
 
-import com.sawcao.NettyIM.util.RedisUtil;
-import io.netty.buffer.ByteBuf;
+import com.sawcao.NettyIM.constant.KafkaConstant;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -10,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.kafka.core.KafkaTemplate;
 import protocol.Seesion.Session;
-import protocol.code.PacketCodec;
 import protocol.packet.MessageRequestPacket;
 import protocol.packet.MessageResponsePacket;
 import utils.SessionUtil;
@@ -33,7 +32,8 @@ public class MessageHandler extends SimpleChannelInboundHandler<MessageRequestPa
 
     @Autowired
     private RedisTemplate<String, Serializable> redisTemplate;
-
+    @Autowired
+    private KafkaTemplate<String, Session> kafkaTemplate;
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequestPacket msg) throws Exception {
@@ -41,8 +41,8 @@ public class MessageHandler extends SimpleChannelInboundHandler<MessageRequestPa
         Session session = SessionUtil.getSession(ctx.channel());
         //将联系人添加至电话簿
         session.addphoneBook(msg.getToId());
-        //缓存用户Session
-        RedisUtil.set(session.getId(),session);
+        //使用kafka进行发送
+        kafkaTemplate.send(KafkaConstant.PHONEBOOK_SAVE_KAFKA,session);
         //构造会话信息
         MessageResponsePacket messageResponsePacket = new MessageResponsePacket();
         messageResponsePacket.setFromId(session.getId());

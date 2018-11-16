@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.util.Assert;
-import server.NettyServer;
+import com.sawcao.NettyIM.server.NettyServer;
 
 import java.io.Serializable;
 import java.util.ArrayList;

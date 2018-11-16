@@ -1,13 +1,9 @@
 package com.sawcao.NettyIM;
 
-import io.netty.channel.ChannelFuture;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import server.NettyServer;
-
-import java.net.InetSocketAddress;
+import com.sawcao.NettyIM.server.NettyServer;
 
 @SpringBootApplication
 @EnableAutoConfiguration

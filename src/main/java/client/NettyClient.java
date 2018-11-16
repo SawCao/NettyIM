@@ -10,14 +10,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import protocol.code.PacketCodecHandler;
-import protocol.code.PacketDecoder;
-import protocol.code.PacketEncoder;
-import protocol.packet.LoginRequestPacket;
-import protocol.packet.MessageRequestPacket;
-import server.CreateGroupRequestHandler;
-import server.IMIdleStateHandler;
-import utils.ConsoleCommand;
-import utils.LoginUtil;
+import com.sawcao.NettyIM.server.CreateGroupRequestHandler;
+import com.sawcao.NettyIM.server.IMIdleStateHandler;
 import utils.SessionUtil;
 import utils.Spliter;
 

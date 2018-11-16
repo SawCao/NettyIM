@@ -1,11 +1,9 @@
 package protocol.code;
 
-import client.GroupMessageResponseHandler;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import protocol.Command;
 import protocol.packet.*;
-import server.GroupMessageRequestHandler;
+import com.sawcao.NettyIM.server.GroupMessageRequestHandler;
 import utils.JSONSerializer;
 import utils.Serializer;
 
@@ -33,7 +31,6 @@ public class PacketCodec {
         byteBuf.writeBytes(bytes);
 
     }
-
     public Packet decode(ByteBuf byteBuf) {
         // 跳过 magic number
         byteBuf.skipBytes(4);

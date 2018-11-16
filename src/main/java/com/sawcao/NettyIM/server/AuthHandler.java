@@ -1,8 +1,7 @@
-package server;
+package com.sawcao.NettyIM.server;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import utils.LoginUtil;
 import utils.SessionUtil;
 
 /**

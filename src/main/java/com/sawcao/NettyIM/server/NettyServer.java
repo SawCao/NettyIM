@@ -1,6 +1,5 @@
-package server;
+package com.sawcao.NettyIM.server;
 
-import client.CreateGroupResponseHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -11,8 +10,6 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.AttributeKey;
 import protocol.code.PacketCodecHandler;
-import protocol.code.PacketDecoder;
-import protocol.code.PacketEncoder;
 import utils.Spliter;
 
 import java.util.Objects;

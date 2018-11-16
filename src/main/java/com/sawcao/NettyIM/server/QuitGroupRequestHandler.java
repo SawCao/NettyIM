@@ -1,4 +1,4 @@
-package server;
+package com.sawcao.NettyIM.server;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
