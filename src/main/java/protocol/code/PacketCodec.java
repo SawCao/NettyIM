@@ -62,22 +62,22 @@ public class PacketCodec {
         return null;
     }
 
-    private Class<? extends Packet> getRequestType(byte command){
-        if(command == Command.LOGIN_REQUEST)
+    private Class<? extends Packet> getRequestType(byte command) {
+        if (command == Command.LOGIN_REQUEST)
             return LoginRequestPacket.class;
-        if(command == Command.LOGIN_RESPONSE)
+        if (command == Command.LOGIN_RESPONSE)
             return LoginResponsePacket.class;
-        if(command == Command.MESSAGE_REQUEST)
+        if (command == Command.MESSAGE_REQUEST)
             return MessageRequestPacket.class;
-        if(command == Command.MESSAGE_RESPONSE)
+        if (command == Command.MESSAGE_RESPONSE)
             return MessageResponsePacket.class;
-        if(command == Command.CREATE_GROUP_REQUEST)
+        if (command == Command.CREATE_GROUP_REQUEST)
             return CreateGroupRequestPacket.class;
-        if(command == Command.CREATE_GROUP_RESPONSE)
+        if (command == Command.CREATE_GROUP_RESPONSE)
             return CreateGroupResponsePacket.class;
-        if(command == Command.LIST_GROUP_MEMBERS_REQUEST)
+        if (command == Command.LIST_GROUP_MEMBERS_REQUEST)
             return ListGroupMembersRequestPacket.class;
-        if(command == Command.LIST_GROUP_MEMBERS_RESPONSE)
+        if (command == Command.LIST_GROUP_MEMBERS_RESPONSE)
             return ListGroupMembersResponsePacket.class;
         if (command == Command.JOIN_GROUP_REQUEST)
             return JoinGroupRequestPacket.class;
@@ -91,19 +91,19 @@ public class PacketCodec {
             return GroupMessageRequestPacket.class;
         if (command == Command.GROUP_MESSAGE_RESPONSE)
             return GroupMessageResponsePacket.class;
-        if(command == Command.HEARTBEAT_REQUEST)
+        if (command == Command.HEARTBEAT_REQUEST)
             return HeartBeatRequestPacket.class;
-        if(command == Command.HEARTBEAT_RESPONSE)
+        if (command == Command.HEARTBEAT_RESPONSE)
             return HeartBeatResponsePacket.class;
         return null;
     }
 
-   /**
-    * @author caorui
-    * @return utils.Serializer
-    * @description:  目前只有json序列化一种方式
-    */
-    private Serializer getSerializer(byte serializeAlgorithm){
+    /**
+     * @return utils.Serializer
+     * @author caorui
+     * @description: 目前只有json序列化一种方式
+     */
+    private Serializer getSerializer(byte serializeAlgorithm) {
         return new JSONSerializer();
     }
 }

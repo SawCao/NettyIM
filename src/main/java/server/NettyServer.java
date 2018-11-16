@@ -10,9 +10,12 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.AttributeKey;
+import protocol.code.PacketCodecHandler;
 import protocol.code.PacketDecoder;
 import protocol.code.PacketEncoder;
 import utils.Spliter;
+
+import java.util.Objects;
 
 /**
  * 描述:
@@ -23,15 +26,18 @@ import utils.Spliter;
  */
 public class NettyServer {
     private static final int BEGIN_PORT = 8000;
+    private NioEventLoopGroup bossGroup;
+    private NioEventLoopGroup workerGroup;
+    private ServerBootstrap serverBootstrap;
 
-    public static void main(String[] args) {
-        NioEventLoopGroup boosGroup = new NioEventLoopGroup();
-        NioEventLoopGroup workerGroup = new NioEventLoopGroup();
+    public void init() {
+        bossGroup = new NioEventLoopGroup();
+        workerGroup = new NioEventLoopGroup();
 
-        final ServerBootstrap serverBootstrap = new ServerBootstrap();
+        serverBootstrap = new ServerBootstrap();
         final AttributeKey<Object> clientKey = AttributeKey.newInstance("clientKey");
         serverBootstrap
-                .group(boosGroup, workerGroup)
+                .group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .handler(new ChannelInboundHandlerAdapter() {
                     @Override
@@ -48,7 +54,7 @@ public class NettyServer {
                     protected void initChannel(NioSocketChannel ch) {
                         ch.pipeline().addLast(new IMIdleStateHandler());
                         ch.pipeline().addLast(new Spliter());
-                        ch.pipeline().addLast(new PacketDecoder());
+                        ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
                         ch.pipeline().addLast(new ServerLoginHandler());
                         ch.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
                         ch.pipeline().addLast(new AuthHandler());
@@ -61,12 +67,24 @@ public class NettyServer {
                         ch.pipeline().addLast(new ListGroupMembersRequestHandler());
                         ch.pipeline().addLast(GroupMessageRequestHandler.INSTANCE);
                         ch.pipeline().addLast(new MessageHandler());
-                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
 
 
         bind(serverBootstrap, BEGIN_PORT);
+    }
+
+    public void destroy() {
+        try {
+            if (Objects.nonNull(bossGroup)) {
+                bossGroup.shutdownGracefully().addListener(future -> System.out.print("关闭bossGroup成功!"));
+            }
+            if (Objects.nonNull(workerGroup)) {
+                workerGroup.shutdownGracefully().addListener(future -> System.out.print("关闭workerGroup成功！"));
+            }
+        } catch (Exception e) {
+            System.out.print("关闭失败！");
+        }
     }
 
     private static void bind(final ServerBootstrap serverBootstrap, final int port) {

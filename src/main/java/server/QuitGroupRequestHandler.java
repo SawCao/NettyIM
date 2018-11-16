@@ -14,7 +14,8 @@ public class QuitGroupRequestHandler extends SimpleChannelInboundHandler<QuitGro
         String groupId = requestPacket.getGroupId();
         ChannelGroup channelGroup = SessionUtil.getChannelGroup(groupId);
         channelGroup.remove(ctx.channel());
-
+        //将group与对应用户解绑
+        SessionUtil.getSession(ctx.channel()).deleteGroupId(groupId);
         // 2. 构造退群响应发送给客户端
         QuitGroupResponsePacket responsePacket = new QuitGroupResponsePacket();
 

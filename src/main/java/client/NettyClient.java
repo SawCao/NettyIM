@@ -9,6 +9,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import protocol.code.PacketCodecHandler;
 import protocol.code.PacketDecoder;
 import protocol.code.PacketEncoder;
 import protocol.packet.LoginRequestPacket;
@@ -53,7 +54,7 @@ public class NettyClient {
                         // 空闲检测
                         ch.pipeline().addLast(new IMIdleStateHandler());
                         ch.pipeline().addLast(new Spliter());
-                        ch.pipeline().addLast(new PacketDecoder());
+                        ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
                         ch.pipeline().addLast(new ClientLoginHandler());
                         ch.pipeline().addLast(new CreateGroupResponseHandler());
                         // 加群响应处理器
@@ -64,7 +65,6 @@ public class NettyClient {
                         ch.pipeline().addLast(new ListGroupMembersResponseHandler());
                         ch.pipeline().addLast(GroupMessageResponseHandler.INSTANCE);
                         ch.pipeline().addLast(new ClientMessageHandler());
-                        ch.pipeline().addLast(new PacketEncoder());
                         // 心跳定时器
                         ch.pipeline().addLast(new HeartBeatTimerHandler());
                     }

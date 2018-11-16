@@ -2,6 +2,9 @@ package protocol.packet;
 
 import lombok.Data;
 import protocol.Command;
+import utils.Serializer;
+
+import java.io.Serializable;
 
 /**
  * 描述:
@@ -11,7 +14,7 @@ import protocol.Command;
  * @create 2018-10-25 10:35
  */
 @Data
-public class MessageResponsePacket extends Packet {
+public class MessageResponsePacket extends Packet implements Serializable {
 
     private String message;
 
